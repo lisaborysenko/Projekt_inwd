@@ -6,7 +6,7 @@ import seaborn as sns
 from palettable.colorbrewer.qualitative import Paired_12 
 from matplotlib.colors import ListedColormap
 
-data = pd.read_csv('menu.csv', encoding='utf-8')
+data = pd.read_csv('menu[1].csv', encoding='utf-8')
 data
 
 data[data['Category'] == 'Breakfast'].groupby(['Item'])['Calories'].sum().plot(kind='bar', figsize=(10,5), cmap='rainbow')
