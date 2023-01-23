@@ -6,14 +6,26 @@ import seaborn as sns
 from palettable.colorbrewer.qualitative import Paired_12 
 from matplotlib.colors import ListedColormap
 
-data = pd.read_csv('menu[1].csv', encoding='utf-8')
+data = pd.read_csv('menu.csv', encoding='utf-8')
 data
+
+#data = data.drop(columns=['Serving Size'])
+#data = data.drop(columns=['Calories from Fat'])
+#data = data.drop(columns=['Total Fat (% Daily Value)'])
+#data = data.drop(columns=['Carbohydrates (% Daily Value)'])
+#data = data.drop(columns=['Dietary Fiber (% Daily Value)'])
+#data = data.drop(columns=['Saturated Fat (% Daily Value)'])
+#data = data.drop(columns=['Cholesterol (% Daily Value)'])
+#data = data.drop(columns=['Saturated Fat'])
+#data = data.drop(columns=['Sodium (% Daily Value)'])
+
 
 data[data['Category'] == 'Breakfast'].groupby(['Item'])['Calories'].sum().plot(kind='bar', figsize=(10,5), cmap='rainbow')
 plt.xlabel('Produkt')
 plt.ylabel('Kalorie')
 plt.title('Rozkład kalorii według produktu')
 plt.show()
+
 
 data.plot.scatter(x='Calories', y='Total Fat', figsize=(10,5), color='#41ecd4')
 plt.xlabel('Kalorie')
@@ -51,6 +63,8 @@ wart_cholesterol = data[['Item','Cholesterol']]
 wart_cholesterol = wart_cholesterol.sort_values(by='Cholesterol', ascending=False)
 wart_cholesterol.head(10)
 
+
+
 def wartosc_cholesterolu(nazwa_item):
     cholesterol = data[data['Item']==nazwa_item]['Cholesterol']
     if cholesterol.empty:
@@ -58,6 +72,8 @@ def wartosc_cholesterolu(nazwa_item):
     return cholesterol.values[0]
 
 print('Wartość cholesterolu wynosi: ', wartosc_cholesterolu(input("Wpisz nazwę produktu: ")))
+
+
 
 
 def sklad_odzywczy(nazwa_item):
@@ -78,6 +94,7 @@ def sklad_odzywczy(nazwa_item):
 print(sklad_odzywczy(input('Wpisz nazwę produktu:')))
 
 
+
 def piec_najzdrowszych_produktow():
     dane_produktu = data.groupby(['Item'])[['Vitamin A', 'Vitamin C', 'Iron', 'Calcium']].sum()
     dane_produktu['Poziom zawartości witamin i minerałów'] = (dane_produktu['Vitamin A'] + dane_produktu['Vitamin C'] + dane_produktu['Iron'] + dane_produktu['Calcium'])/4
@@ -91,6 +108,8 @@ def piec_najzdrowszych_produktow():
 
 print(piec_najzdrowszych_produktow())
 
+
+
 def top_produktow_z_najmniejsza_zaw_cukrow():
     cukier = data.sort_values(by='Sugars', ascending=False)
     top_10 = cukier.head(10)
@@ -101,6 +120,9 @@ def top_produktow_z_najmniejsza_zaw_cukrow():
     plt.title("Top 10 Produktów Z Najmniejszą Zawartością Cukrów")
     plt.show()
 print(top_produktow_z_najmniejsza_zaw_cukrow())
+
+
+
 
 def srednia_kalorycznosc(data):
     return np.mean(data['Calories'])
